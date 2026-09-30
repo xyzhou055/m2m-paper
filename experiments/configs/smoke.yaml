@@ -1,0 +1,54 @@
+name: smoke
+output_dir: results/smoke
+save_checkpoints: true
+
+base:
+  data:
+    kind: synthetic
+    name: synthetic-smoke
+    num_samples: 10000
+    num_features: 100
+    num_relevant_features: 50
+    num_classes: 2
+    class_separation: 1.5
+    label_noise: 0.05
+    train_fraction: 0.6
+    validation_fraction: 0.2
+  model:
+    aggregated_dim: 4
+    hidden_dim: 32
+    classifier: mlp
+    noise_std: 0.05
+    gate_temperature: 0.1
+    gate_gamma: -0.1
+    gate_zeta: 1.1
+  objective:
+    trace_weight: 1.0
+    sparsity_weight: 0.2
+    binary_weight: 0.05
+    sparsity_weighting: variance
+    trace_normalization: normalized
+    trace_epsilon: 1.0e-8
+    detach_trace_gates: false
+    detach_trace_denominator: false
+    gate_warmup_iterations: 1
+    gate_ramp_iterations: 2
+    selection_gate_samples: 16
+  agda:
+    multiplier_grid: [0.0, 0.2, 0.5, 1.0, 1.5]
+    initial_grid_index: 4
+    target_accuracy: 0.70
+    tolerance: 0.02
+    smoothing: 0.8
+    use_smoothed_accuracy: false
+    outer_iterations: 4
+    primal_steps_per_adjustment: 0
+  training:
+    batch_size: 64
+    learning_rate: 0.003
+    optimizer: adam
+    weight_decay: 0.0
+    seed: 0
+    device: auto
+
+sweep: {}

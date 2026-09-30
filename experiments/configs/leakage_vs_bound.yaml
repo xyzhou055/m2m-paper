@@ -1,0 +1,58 @@
+name: figure-f-leakage-vs-bound
+output_dir: results/figure-f-leakage-vs-bound
+save_checkpoints: false
+
+base:
+  data:
+    kind: synthetic
+    name: gaussian-theorem-4
+    num_samples: 10000
+    num_features: 100
+    num_relevant_features: 50
+    num_classes: 2
+    class_separation: 1.5
+    label_noise: 0.0
+    train_fraction: 0.6
+    validation_fraction: 0.2
+  model:
+    aggregated_dim: 2
+    hidden_dim: 64
+    classifier: mlp
+    noise_std: 0.1
+    gate_temperature: 0.1
+    gate_gamma: -0.1
+    gate_zeta: 1.1
+  objective:
+    trace_weight: 1.0
+    sparsity_weight: 0.01
+    binary_weight: 0.05
+    sparsity_weighting: uniform
+    trace_normalization: normalized
+    trace_epsilon: 1.0e-8
+    detach_trace_gates: true
+    detach_trace_denominator: true
+    gate_warmup_iterations: 2
+    gate_ramp_iterations: 4
+    selection_gate_samples: 16
+  agda:
+    multiplier_grid: [0.0, 0.1, 0.2, 0.3, 0.5, 0.7, 1.0, 1.5, 2.0]
+    initial_grid_index: 7
+    target_accuracy: 0.60
+    tolerance: 0.01
+    smoothing: 0.8
+    use_smoothed_accuracy: false
+    outer_iterations: 20
+    primal_steps_per_adjustment: 20
+  training:
+    batch_size: 128
+    learning_rate: 0.001
+    optimizer: adam
+    weight_decay: 0.0
+    seed: 0
+    device: auto
+
+sweep:
+  model.aggregated_dim: [1, 2, 4, 8]
+  model.noise_std: [0.05, 0.10, 0.20]
+  objective.sparsity_weight: [0.0, 0.01, 0.05]
+  agda.target_accuracy: [0.60, 0.70, 0.80]

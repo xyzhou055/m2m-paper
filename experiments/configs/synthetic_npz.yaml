@@ -1,0 +1,47 @@
+name: synthetic-npz
+output_dir: results/synthetic-npz
+save_checkpoints: true
+
+base:
+  data:
+    kind: npz
+    name: synthetic-ready
+    path: ../../data/synthetic_ready.npz
+  model:
+    aggregated_dim: 4
+    hidden_dim: 32
+    classifier: mlp
+    noise_std: 0.05
+    gate_temperature: 0.1
+    gate_gamma: -0.1
+    gate_zeta: 1.1
+  objective:
+    trace_weight: 1.0
+    sparsity_weight: 0.2
+    binary_weight: 0.05
+    sparsity_weighting: variance
+    trace_normalization: normalized
+    trace_epsilon: 1.0e-8
+    detach_trace_gates: false
+    detach_trace_denominator: false
+    gate_warmup_iterations: 1
+    gate_ramp_iterations: 2
+    selection_gate_samples: 16
+  agda:
+    multiplier_grid: [0.0, 0.2, 0.5, 1.0, 1.5]
+    initial_grid_index: 4
+    target_accuracy: 0.70
+    tolerance: 0.02
+    smoothing: 0.8
+    use_smoothed_accuracy: false
+    outer_iterations: 4
+    primal_steps_per_adjustment: 0
+  training:
+    batch_size: 64
+    learning_rate: 0.003
+    optimizer: adam
+    weight_decay: 0.0
+    seed: 0
+    device: auto
+
+sweep: {}

@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "m2m-agda"
+version = "0.1.0"
+description = "Implementation of M2M accuracy-guided dual adjustment"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=1.26",
+  "PyYAML>=6.0",
+  "torch>=2.2",
+]
+
+[project.optional-dependencies]
+experiments = [
+  "matplotlib>=3.8",
+]
+data = [
+  "pandas>=2.1",
+  "scikit-learn>=1.4",
+]
+
+[project.scripts]
+m2m-agda = "m2m_agda.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

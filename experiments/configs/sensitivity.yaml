@@ -1,0 +1,55 @@
+name: agda-sensitivity
+output_dir: results/agda-sensitivity
+save_checkpoints: true
+
+base:
+  data:
+    kind: synthetic
+    name: synthetic-sensitivity
+    num_samples: 10000
+    num_features: 100
+    num_relevant_features: 50
+    num_classes: 2
+    class_separation: 1.5
+    label_noise: 0.05
+    train_fraction: 0.6
+    validation_fraction: 0.2
+  model:
+    aggregated_dim: 2
+    hidden_dim: 64
+    classifier: mlp
+    noise_std: 0.05
+    gate_temperature: 0.1
+    gate_gamma: -0.1
+    gate_zeta: 1.1
+  objective:
+    trace_weight: 1.0
+    sparsity_weight: 0.2
+    binary_weight: 0.2
+    sparsity_weighting: entropy
+    trace_normalization: normalized
+    detach_trace_gates: false
+    detach_trace_denominator: false
+    gate_warmup_iterations: 5
+    gate_ramp_iterations: 10
+    selection_gate_samples: 16
+  agda:
+    multiplier_grid: [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.2, 1.5]
+    initial_grid_index: 12
+    target_accuracy: 0.80
+    tolerance: 0.01
+    smoothing: 0.8
+    use_smoothed_accuracy: false
+    outer_iterations: 40
+    primal_steps_per_adjustment: 100
+  training:
+    batch_size: 256
+    learning_rate: 0.001
+    optimizer: adam
+    weight_decay: 0.0
+    seed: 0
+    device: auto
+
+sweep:
+  model.aggregated_dim: [2, 4, 8]
+  training.seed: [0, 1, 2]
